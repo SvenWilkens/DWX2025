@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Daten senden</title>
+</head>
+<body>
+  <h1>Datenformular</h1>
+  <form id="datenFormular">
+    <label for="kundennummer">Kundennummer:</label><br>
+    <input type="text" id="kundennummer" name="kundennummer" required><br><br>
+
+    <label for="artikel">Artikel:</label><br>
+    <input type="text" id="artikel" name="artikel" required><br><br>
+
+    <label for="preis">Preis:</label><br>
+    <input type="number" id="preis" name="preis" step="0.01" required><br><br>
+
+    <button type="submit">Senden</button>
+  </form>
+
+  <p id="antwort"></p>
+
+  <script>
+    document.getElementById('datenFormular').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const daten = {
+        Kundennummer: document.getElementById('kundennummer').value,
+        Artikel: document.getElementById('artikel').value,
+        Preis: parseFloat(document.getElementById('preis').value)
+      };
+
+      fetch('https://dwxdemo5-dev-apim.azure-api.net/orderservice/orderservice/order/receive', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+          'ocp-apim-subscription-key':'008f760e689243ac89778eca5e38f9a6'
+          
+        },
+        body: JSON.stringify(daten)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Fehler beim Senden der Daten');
+        }
+        return response.json();
+      })
+      .then(result => {
+        document.getElementById('antwort').textContent = 'Erfolgreich gesendet!';
+        console.log(result);
+      })
+      .catch(error => {
+        document.getElementById('antwort').textContent = 'Fehler: ' + error.message;
+      });
+    });
+  </script>
+</body>
+</html>

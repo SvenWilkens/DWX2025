@@ -1,0 +1,29 @@
+{
+    "SendFrom": {
+        "type": "String",
+        "value": "@appsetting('Z_COMMUNICATIONSERVICE_SENDER')"
+    },
+    "acsemail-Authentication": {
+        "type": "Object",
+        "value": {
+            "type": "ManagedServiceIdentity"
+        }
+    },
+    "acsemail-ConnectionRuntimeUrl": {
+        "type": "String",
+        "value": "@appsetting('acsemail-ConnectionRuntimeUrl')"
+    },
+    "serviceBusReceiveQueue": {
+        "type": "String",
+        "value": "@appsetting('QueueName')"
+    },
+     "serviceBusProcesseQueue": {
+        "type": "String",
+        "value": "@appsetting('ProcessQueueName')"
+    },
+    
+     "apimKey": {
+        "type": "String",
+        "value": "@appsetting('ApimKey')"
+    }
+}

@@ -1,0 +1,30 @@
+parameters:
+  - name: filePath
+
+jobs:  
+  - job: BuildLogicApp
+    displayName: Build LogicApp Workflows
+    steps:
+      - task: CopyFiles@2
+        displayName: Copy workflow files
+        inputs:
+          SourceFolder: ${{ parameters.filePath }}
+          Contents: |
+            **
+            !**/.vscode/**
+            !**/.git/**
+            !.gitignore
+            !.funcignore
+          TargetFolder: "$(Build.ArtifactStagingDirectory)"
+          CleanTargetFolder: true
+      - task: ArchiveFiles@2
+        displayName: Build zip file for deployment
+        inputs:
+          rootFolderOrFile: "$(Build.ArtifactStagingDirectory)"
+          includeRootFolder: false
+          archiveType: "zip"
+          archiveFile: "$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip"
+          replaceExistingArchive: true
+      - publish: "$(Build.ArtifactStagingDirectory)"
+        displayName: "Publish zip"
+        artifact: dropLogicApp

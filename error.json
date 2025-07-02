@@ -1,0 +1,35 @@
+{
+    "status": "Failed",
+    "error": {
+        "code": "DeploymentFailed",
+        "target": "/subscriptions/31941c14-308a-44cd-bfd2-8d846e52733e/providers/Microsoft.Resources/deployments/main",
+        "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/arm-deployment-operations for usage details.",
+        "details": [
+            {
+                "code": "ResourceDeploymentFailure",
+                "target": "/subscriptions/31941c14-308a-44cd-bfd2-8d846e52733e/resourceGroups/rg-dwxdemo5-dev/providers/Microsoft.Resources/deployments/apiManagement-i2gfdnyj6yu5s",
+                "message": "The resource write operation failed to complete successfully, because it reached terminal provisioning state 'Failed'.",
+                "details": [
+                    {
+                        "code": "DeploymentFailed",
+                        "target": "/subscriptions/31941c14-308a-44cd-bfd2-8d846e52733e/resourceGroups/rg-dwxdemo5-dev/providers/Microsoft.Resources/deployments/apiManagement-i2gfdnyj6yu5s",
+                        "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/arm-deployment-operations for usage details.",
+                        "details": [
+                            {
+                                "code": "ValidationError",
+                                "message": "One or more fields contain incorrect values:",
+                                "details": [
+                                    {
+                                        "code": "ValidationError",
+                                        "target": "aid",
+                                        "message": "API not found"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

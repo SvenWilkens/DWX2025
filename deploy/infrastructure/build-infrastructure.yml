@@ -1,0 +1,20 @@
+jobs:
+  - job: BuildInfrastructure
+    displayName: Build Infrastructure
+    steps:
+      - task: CopyFiles@2
+        displayName: Copy workflow files
+        inputs:
+          SourceFolder: "$(System.DefaultWorkingDirectory)/iac"
+          Contents: |
+            **
+            !**/.vscode/**
+            !**/.git/**
+            !.gitignore
+            !.funcignore
+          TargetFolder: "$(Build.ArtifactStagingDirectory)"
+          CleanTargetFolder: true
+        
+      - publish: "$(Build.ArtifactStagingDirectory)"
+        displayName: "Publish zip"
+        artifact: dropInfrastructure

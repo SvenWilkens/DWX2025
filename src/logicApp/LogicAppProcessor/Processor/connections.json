@@ -1,0 +1,37 @@
+{
+  "serviceProviderConnections": {
+    "serviceBus": {
+      "parameterValues": {
+        "fullyQualifiedNamespace": "@appsetting('serviceBus_fullyQualifiedNamespace')",
+        "authProvider": {
+          "Type": "ManagedServiceIdentity"
+        }
+      },
+      "parameterSetName": "ManagedServiceIdentity",
+      "serviceProvider": {
+        "id": "/serviceProviders/serviceBus"
+      },
+      "displayName": "ServiceBusConnection"
+    }
+  },
+  "managedApiConnections": {
+    "acsemail-1": {
+      "api": {
+        "id": "@appsetting('acsemail-api-id')"
+      },
+      "connection": {
+        "id": "@appsetting('acsemail-connection-id')"
+      },
+      "authentication": "@parameters('acsemail-Authentication')",
+      "connectionRuntimeUrl": "@parameters('acsemail-ConnectionRuntimeUrl')"
+    }
+  },
+  "apiManagementConnections": {
+        "apiManagementOperation": {
+            "apiId": "/subscriptions/31941c14-308a-44cd-bfd2-8d846e52733e/resourceGroups/rg-dwxdemo5-dev/providers/Microsoft.ApiManagement/service/dwxdemo5-dev-apim/apis/emailService",
+            "baseUrl": "https://dwxdemo5-dev-apim.azure-api.net/emailservice",
+            "displayName": "apimConnection",
+            "subscriptionKey": "@appsetting('ApimKey')"
+        }
+    }
+}

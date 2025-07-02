@@ -1,0 +1,34 @@
+parameters:   
+  - name: ServiceConnectionName
+  - name: Location
+  - name: Environment
+
+jobs:
+  - deployment: DeployInfrastructure
+    displayName: Deploy Infrastructure
+    environment: ${{ parameters.Environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureCLI@2
+            displayName: Deploy Bicep template
+            inputs:
+              azureSubscription: ${{ parameters.ServiceConnectionName }}
+              scriptType: pscore
+              scriptLocation: inlineScript
+              inlineScript: |
+                Write-Output "##[command]az deployment sub what-if --location ${{ parameters.Location }} --template-file $(Pipeline.Workspace)/dropInfrastructure/main.bicep --parameters '$(Pipeline.Workspace)/dropInfrastructure/parameters/parameters.${{ parameters.Environment }}.json'"
+                az deployment sub what-if `
+                  --location ${{ parameters.Location }} `
+                  --template-file $(Pipeline.Workspace)/dropInfrastructure/main.bicep `
+                  --parameters $(Pipeline.Workspace)/dropInfrastructure/parameters/parameters.${{ parameters.Environment }}.json
+                   
+                  
+                Write-Output "##[command]az deployment sub create --location ${{ parameters.Location }} --template-file $(Pipeline.Workspace)/dropInfrastructure/main.bicep --parameters '$(Pipeline.Workspace)/dropInfrastructure/parameters/parameters.${{ parameters.Environment }}.json'"
+                az deployment sub create `
+                  --location ${{ parameters.Location }} `
+                  --template-file $(Pipeline.Workspace)/dropInfrastructure/main.bicep `
+                  --parameters '$(Pipeline.Workspace)/dropInfrastructure/parameters/parameters.${{ parameters.Environment }}.json'
+                  
+            

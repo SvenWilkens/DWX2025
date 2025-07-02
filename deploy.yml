@@ -1,0 +1,72 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+
+parameters:
+  - name: deployToDev
+    type: boolean
+    default: true
+  - name: deployToTest
+    type: boolean
+    default: false
+  - name: deployToProd
+    type: boolean
+    default: false
+  - name: ServiceConnectionName
+    type: string
+    default: 'Azure-Sven'
+  - name: Location
+    default: westeurope
+
+ 
+stages:
+  - stage: Build
+    displayName: 'Build Resources'
+    
+    jobs:
+    - template: deploy/infrastructure/build-infrastructure.yml
+    - template: deploy/functionApp/build-function-app.yml
+      parameters:
+        csprojFilePath: '$(System.DefaultWorkingDirectory)/src/functionAppReceiver/functionApp.csproj'
+    - template: deploy/logicApp/build-logic-app.yml
+      parameters:
+        filePath: '$(System.DefaultWorkingDirectory)/src/logicApp/LogicAppProcessor/Processor'
+      
+
+  - stage: Dev
+    condition: and( eq('${{ parameters.deployToDev }}','true'), succeeded('Build') )
+    dependsOn: Build  
+    displayName: 'Deploy to Dev'
+    jobs: 
+    - template: 'deploy/infrastructure/deploy-infrastructure.yml'
+      parameters: 
+        ServiceConnectionName: '${{ parameters.ServiceConnectionName }}'
+        Location: '${{ parameters.Location }}'
+        Environment: 'Dev'
+    - template: 'deploy/functionApp/deploy-function-app.yml'
+      parameters: 
+        environment: 'Dev'
+        serviceConnectionName: '${{ parameters.ServiceConnectionName }}'
+        funcAppName: 'fa-dwxdemo5-integration-receiver-dev'
+    - template: 'deploy/logicApp/deploy-logic-app.yml'
+      parameters: 
+        environment: 'Dev'
+        serviceConnectionName: '${{ parameters.ServiceConnectionName }}'
+        logicAppName: 'la-dwxdemo5-integration-processor-dev'
+
+  
+  #- stage: Test
+  #  condition: and( eq('${{ parameters.deployToTest }}','true'), succeeded('Dev') )
+  #  dependsOn: Dev  
+  #  displayName: 'Deploy to Test'
+  #  jobs: 
+ 
+ 
+
+ # - stage: Prod
+ #   condition: and( eq('${{ parameters.deployToProd }}','true'), succeeded('Test') )
+ #   dependsOn: Test  
+ #   displayName: 'Deploy to Prod'
+  #  jobs: 

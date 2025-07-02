@@ -1,0 +1,7 @@
+parameters:   
+  - name: Environment
+
+jobs:
+  - deployment: DeployInfrastructure
+    displayName: Deploy Infrastructure
+    environment: ${{ parameters.Environment }}

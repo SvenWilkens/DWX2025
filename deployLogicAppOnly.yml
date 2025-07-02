@@ -1,0 +1,44 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+
+parameters:
+  - name: deployToDev
+    type: boolean
+    default: true
+  - name: deployToTest
+    type: boolean
+    default: false
+  - name: deployToProd
+    type: boolean
+    default: false
+  - name: ServiceConnectionName
+    type: string
+    default: 'Azure-Sven'
+  - name: Location
+    default: westeurope
+
+ 
+stages:
+  - stage: Build
+    displayName: 'Build Resources'
+    
+    jobs:
+    - template: deploy/logicApp/build-logic-app.yml
+      parameters:
+        filePath: '$(System.DefaultWorkingDirectory)/src/logicApp/LogicAppProcessor/Processor'
+      
+
+  - stage: Dev
+    condition: and( eq('${{ parameters.deployToDev }}','true'), succeeded('Build') )
+    dependsOn: Build  
+    displayName: 'Deploy to Dev'
+    jobs: 
+    - template: 'deploy/logicApp/deploy-logic-app.yml'
+      parameters: 
+        environment: 'Dev'
+        serviceConnectionName: '${{ parameters.ServiceConnectionName }}'
+        logicAppName: 'la-dwxdemo5-integration-processor-dev'
+

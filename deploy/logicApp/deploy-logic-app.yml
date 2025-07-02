@@ -1,0 +1,22 @@
+parameters:
+  - name: environment
+  - name: serviceConnectionName
+  - name: logicAppName
+
+jobs:
+  - deployment: test
+    displayName: Deploy LogicApp Workflows
+    dependsOn: DeployInfrastructure
+    environment: ${{ parameters.environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: AzureFunctionApp@1
+              displayName: Deploy LogicApp Workflows
+              inputs:
+                azureSubscription: ${{ parameters.serviceConnectionName }}
+                appType: "workflowapp"
+                appName: ${{ parameters.logicAppName }}
+                package: "$(Pipeline.Workspace)/dropLogicApp/**/*.zip"
+                deploymentMethod: "zipDeploy"

@@ -1,0 +1,124 @@
+{
+    "definition": {
+        "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+        "contentVersion": "1.0.0.0",
+        "actions": {
+            "Send_email": {
+                "type": "ApiConnection",
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "referenceName": "acsemail-1"
+                        }
+                    },
+                    "method": "post",
+                    "body": {
+                        "senderAddress": "@parameters('SendFrom')",
+                        "recipients": {
+                            "to": [
+                                {
+                                    "address": "@variables('mailAdresse')"
+                                }
+                            ]
+                        },
+                        "content": {
+                            "subject": "Test",
+                            "html": "<p class=\"editor-paragraph\">Dieses ist eine Azure Test nachricht</p>"
+                        },
+                        "importance": "Normal"
+                    },
+                    "path": "/emails:sendGAVersion",
+                    "queries": {
+                        "api-version": "2023-03-31"
+                    }
+                },
+                "runAfter": {
+                    "Initialize_variables": [
+                        "SUCCEEDED"
+                    ]
+                }
+            },
+            "Parse_JSON": {
+                "type": "ParseJson",
+                "inputs": {
+                    "content": "@triggerBody()?['contentData']",
+                    "schema": {
+                        "type": "object",
+                        "properties": {
+                            "Kundennummer": {
+                                "type": "string"
+                            },
+                            "Artikel": {
+                                "type": "string"
+                            },
+                            "Preis": {
+                                "type": "number"
+                            }
+                        }
+                    }
+                },
+                "runAfter": {}
+            },
+            "Call_an_Azure_API_Management_API": {
+                "type": "ApiManagement",
+                "inputs": {
+                    "apiManagement": {
+                        "operationId": "post_create",
+                        "connection": "apiManagementOperation"
+                    },
+                    "method": "post",
+                    "pathTemplate": {
+                        "template": "/emailservice/email/create"
+                    },
+                    "body": {
+                        "Kundennummer": "@body('Parse_JSON')?['Kundennummer']",
+                        "Artikel": "dfgdfg",
+                        "Email": "sven-wilkens@outlook.de",
+                        "Preis": 5454
+                    }
+                },
+                "runAfter": {
+                    "Parse_JSON": [
+                        "SUCCEEDED"
+                    ]
+                }
+            },
+            "Initialize_variables": {
+                "type": "InitializeVariable",
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "mailAdresse",
+                            "type": "string",
+                            "value": "@{body('Call_an_Azure_API_Management_API')?['Email']}"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Call_an_Azure_API_Management_API": [
+                        "SUCCEEDED"
+                    ]
+                }
+            }
+        },
+        "outputs": {},
+        "triggers": {
+            "When_messages_are_available_in_a_queue": {
+                "type": "ServiceProvider",
+                "inputs": {
+                    "parameters": {
+                        "queueName": "@parameters('serviceBusReceiveQueue')",
+                        "isSessionsEnabled": false
+                    },
+                    "serviceProviderConfiguration": {
+                        "connectionName": "serviceBus",
+                        "operationId": "receiveQueueMessages",
+                        "serviceProviderId": "/serviceProviders/serviceBus"
+                    }
+                },
+                "splitOn": "@triggerOutputs()?['body']"
+            }
+        }
+    },
+    "kind": "Stateful"
+}

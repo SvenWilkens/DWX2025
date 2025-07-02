@@ -1,0 +1,49 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Create Order",
+        "description": "",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://dwxdemo3-dev-apim.azure-api.net/"
+        }
+    ],
+    "paths": {
+        "/orderService/order/receive": {
+            "post": {
+                "summary": "receive",
+                "description": "Testbeschreibung",
+                "operationId": "receive",
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "apiKeyHeader": {
+                "type": "apiKey",
+                "name": "Ocp-Apim-Subscription-Key",
+                "in": "header"
+            },
+            "apiKeyQuery": {
+                "type": "apiKey",
+                "name": "subscription-key",
+                "in": "query"
+            }
+        }
+    },
+    "security": [
+        {
+            "apiKeyHeader": []
+        },
+        {
+            "apiKeyQuery": []
+        }
+    ]
+}

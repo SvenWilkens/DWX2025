@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Attach to .NET Functions",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:azureFunctions.pickProcess}"
+        },
+        {
+            "name": "Run/Debug logic app OrderReceiver",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:azureLogicAppsStandard.pickProcess}"
+        },
+        {
+            "name": "Run/Debug logic app Communication",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:azureLogicAppsStandard.pickProcess}"
+        },
+        {
+            "name": "Run/Debug logic app ProcessOrder",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:azureLogicAppsStandard.pickProcess}"
+        }
+    ]
+}

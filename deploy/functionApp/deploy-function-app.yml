@@ -1,0 +1,22 @@
+parameters:
+  - name: environment
+  - name: serviceConnectionName
+  - name: funcAppName
+
+jobs:
+  - deployment: DeployFunctionApp
+    displayName: Deploy FunctionApp
+    dependsOn: DeployInfrastructure
+    environment: ${{ parameters.environment }}
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+            - task: AzureFunctionApp@1
+              displayName: Deploy Azure Functions
+              inputs:
+                azureSubscription: ${{ parameters.serviceConnectionName }}
+                appType: "functionApp"
+                appName: ${{ parameters.funcAppName }}
+                package: "$(Pipeline.Workspace)/dropFunctionApp/**/*.zip"
+                deploymentMethod: auto

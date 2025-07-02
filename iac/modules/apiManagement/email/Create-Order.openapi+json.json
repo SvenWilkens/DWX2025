@@ -1,0 +1,96 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Email Service",
+        "description": "",
+        "version": "1.0"
+    },
+    "servers": [{
+        "url": "https://dwxdemo5-dev-apim.azure-api.net/emailservice"
+    }],
+    "paths": {
+        "/emailservice/email/create": {
+            "post": {
+                "summary": "create",
+                "description": "Erstellt einen Emailtext",
+                "operationId": "post_create",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": ["Kundennummer", "Artikel", "Email", "Preis"],
+                                "type": "object",
+                                "properties": {
+                                    "Kundennummer": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "example": {
+                                "Kundennummer": "123456"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "Email": {
+                                            "type": "string",
+                                            "format": "email"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "Email": "sven-wilkens@outlook.de"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "example": {
+                                    "message": "Resource not found"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "apiKeyHeader": {
+                "type": "apiKey",
+                "name": "Ocp-Apim-Subscription-Key",
+                "in": "header"
+            },
+            "apiKeyQuery": {
+                "type": "apiKey",
+                "name": "subscription-key",
+                "in": "query"
+            }
+        }
+    },
+    "security": [{
+        "apiKeyHeader": []
+    }, {
+        "apiKeyQuery": []
+    }]
+}

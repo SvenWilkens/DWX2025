@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "name": "Processor",
+      "path": "./Processor"
+    }
+  ],
+  "settings": {
+    "terminal.integrated.env.windows": {
+      "PATH": "C:\\Users\\sven-\\.azurelogicapps\\dependencies\\DotNetSDK;${env:PATH}"
+    },
+    "omnisharp.dotNetCliPaths": [
+      "C:\\Users\\sven-\\.azurelogicapps\\dependencies\\DotNetSDK"
+    ]
+  }
+}

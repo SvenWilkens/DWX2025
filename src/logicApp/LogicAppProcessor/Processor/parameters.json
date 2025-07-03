@@ -1,29 +1,48 @@
 {
-    "SendFrom": {
-        "type": "String",
-        "value": "@appsetting('Z_COMMUNICATIONSERVICE_SENDER')"
-    },
-    "acsemail-Authentication": {
-        "type": "Object",
-        "value": {
-            "type": "ManagedServiceIdentity"
-        }
-    },
-    "acsemail-ConnectionRuntimeUrl": {
-        "type": "String",
-        "value": "@appsetting('acsemail-ConnectionRuntimeUrl')"
-    },
-    "serviceBusReceiveQueue": {
-        "type": "String",
-        "value": "@appsetting('QueueName')"
-    },
-     "serviceBusProcesseQueue": {
-        "type": "String",
-        "value": "@appsetting('ProcessQueueName')"
-    },
-    
-     "apimKey": {
-        "type": "String",
-        "value": "@appsetting('ApimKey')"
+  "SendFrom": {
+    "type": "String",
+    "value": "@appsetting('Z_COMMUNICATIONSERVICE_SENDER')"
+  },
+  "acsemail-Authentication": {
+    "type": "Object",
+    "value": {
+      "type": "ManagedServiceIdentity"
     }
+  },
+  "acsemail-ConnectionRuntimeUrl": {
+    "type": "String",
+    "value": "@appsetting('acsemail-ConnectionRuntimeUrl')"
+  },
+  "serviceBusReceiveQueue": {
+    "type": "String",
+    "value": "@appsetting('QueueName')"
+  },
+  "serviceBusProcesseQueue": {
+    "type": "String",
+    "value": "@appsetting('ProcessQueueName')"
+  },
+  "apimKey": {
+    "type": "String",
+    "value": "@appsetting('ApimKey')"
+  },
+  "acsemail-1-ConnectionRuntimeUrl": {
+    "type": "String",
+    "value": "@appsetting('acsemail-1-ConnectionRuntimeUrl')"
+  },
+  "acsemail-1-Authentication": {
+    "type": "Object",
+    "value": "@parameters('acsemail-Authentication')"
+  },
+  "apiManagementOperation-ResourceGroup": {
+    "type": "String",
+    "value": "rg-dwxdemo5-dev"
+  },
+  "apiManagementOperation-ServiceName": {
+    "type": "String",
+    "value": "dwxdemo5-dev-apim"
+  },
+  "apiManagementOperation-BaseUrl": {
+    "type": "String",
+    "value": "https://dwxdemo5-dev-apim.azure-api.net/emailservice"
+  }
 }

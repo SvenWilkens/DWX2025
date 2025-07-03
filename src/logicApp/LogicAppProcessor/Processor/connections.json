@@ -17,21 +17,21 @@
   "managedApiConnections": {
     "acsemail-1": {
       "api": {
-        "id": "@appsetting('acsemail-api-id')"
+        "id": "@appsetting('acsemail-api-id')//@{appsetting('WORKFLOWS_SUBSCRIPTION_ID')}////@{appsetting('WORKFLOWS_LOCATION_NAME')}"
       },
       "connection": {
-        "id": "@appsetting('acsemail-connection-id')"
+        "id": "@appsetting('acsemail-connection-id')//@{appsetting('WORKFLOWS_SUBSCRIPTION_ID')}//@{appsetting('WORKFLOWS_RESOURCE_GROUP_NAME')}"
       },
-      "authentication": "@parameters('acsemail-Authentication')",
-      "connectionRuntimeUrl": "@parameters('acsemail-ConnectionRuntimeUrl')"
+      "authentication": "@parameters('acsemail-1-Authentication')",
+      "connectionRuntimeUrl": "@parameters('acsemail-1-ConnectionRuntimeUrl')"
     }
   },
   "apiManagementConnections": {
-        "apiManagementOperation": {
-            "apiId": "/subscriptions/31941c14-308a-44cd-bfd2-8d846e52733e/resourceGroups/rg-dwxdemo5-dev/providers/Microsoft.ApiManagement/service/dwxdemo5-dev-apim/apis/emailService",
-            "baseUrl": "https://dwxdemo5-dev-apim.azure-api.net/emailservice",
-            "displayName": "apimConnection",
-            "subscriptionKey": "@appsetting('ApimKey')"
-        }
+    "apiManagementOperation": {
+      "apiId": "/subscriptions/@{appsetting('WORKFLOWS_SUBSCRIPTION_ID')}/resourceGroups/@{parameters('apiManagementOperation-ResourceGroup')}/providers/Microsoft.ApiManagement/service/@{parameters('apiManagementOperation-ServiceName')}/apis/emailService",
+      "baseUrl": "@parameters('apiManagementOperation-BaseUrl')",
+      "displayName": "apimConnection",
+      "subscriptionKey": "@appsetting('ApimKey')"
     }
+  }
 }
